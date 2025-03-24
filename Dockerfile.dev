@@ -1,12 +1,31 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11-slim
 
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 # Set the working directory in the container
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Copy the prod.env file to .env
+COPY what_backend/dev.env what_backend/.env
 
-COPY . .
+# Copy the current directory contents into the container at /app
+COPY . /app
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Make sure SQLite file path is valid (optional)
+RUN mkdir -p /app/db && chmod -R 755 /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy the entrypoint script
+COPY dev_entrypoint.sh /dev_entrypoint.sh
+RUN chmod +x /dev_entrypoint.sh
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Use the entrypoint script
+ENTRYPOINT ["/dev_entrypoint.sh"]

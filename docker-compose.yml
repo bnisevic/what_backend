@@ -1,7 +1,6 @@
 version: '3.9'
 
 services:
-
   backend:
     build:
       context: .
@@ -10,6 +9,10 @@ services:
       - what_net
     ports:
       - "8000:8000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./db_data:/app/db
 
 networks:
   what_net:
