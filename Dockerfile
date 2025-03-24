@@ -4,6 +4,9 @@ FROM python:3.11-slim
 # Set the working directory in the container
 WORKDIR /app
 
+# Copy the example.env file to .env
+COPY what_backend/example.env what_backend/.env
+
 # Copy the current directory contents into the container at /app
 COPY . /app
 
