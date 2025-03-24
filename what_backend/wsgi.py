@@ -1,5 +1,3 @@
-# what_backend/wsgi.py
-
 import os
 from django.core.wsgi import get_wsgi_application
 

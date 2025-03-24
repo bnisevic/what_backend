@@ -8,13 +8,15 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
+
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
+RUN python manage.py loaddata api/fixtures/products.json
+RUN python manage.py test
 
 # Make port 8000 available to the world outside this container
-EXPOSE 80
-
-# Define environment variable
-ENV NAME World
+EXPOSE 8000
 
 # Run gunicorn when the container launches
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "what_backend.wsgi:application"]
