@@ -1,0 +1,10 @@
+coverage
+Django
+djangorestframework
+django-rest-knox
+django-cors-headers
+django-environ
+drf-yasg
+gunicorn
+ipdb
+psycopg2-binary

@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    networks:
+      - what_net
+    ports:
+      - "8000:8000"
+
+networks:
+  what_net:
