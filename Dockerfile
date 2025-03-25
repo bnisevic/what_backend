@@ -14,13 +14,12 @@ COPY . /app
 # Install any needed packages specified in requirements.txt
 RUN pip install -r requirements.txt
 
-RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate
-RUN python manage.py loaddata api/fixtures/products.json
-RUN python manage.py test
+# Copy the entrypoint script
+COPY prod_entrypoint.sh /prod_entrypoint.sh
+RUN chmod +x /prod_entrypoint.sh
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Run gunicorn when the container launches
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "what_backend.wsgi:application"]
+# Use the entrypoint script
+ENTRYPOINT ["/prod_entrypoint.sh"]
